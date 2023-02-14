@@ -16,7 +16,7 @@ void servoInit()
 
 void gateRaise()
 {
-    int dest = DUTY_MAX/2
+    int dest = DUTY_MAX/2;
     servo.write(dest);
 }
 
