@@ -184,19 +184,15 @@ static void writeOnLCDCharToString(char keypadKey){
     
     countCodeKeys++;
     if(countCodeKeys == 4){
+        correctCode = true;
     
     for (int i = 0; i < 4; i++){
 
-        if (enteredCode[i] == codeSequence[i] ){
-            if(i == 3){
+        if ((enteredCode[i] == codeSequence[i] ) && (correctCode == true)){
                 correctCode = true;
-            }
+        } else {
+            correctCode = false;
         }
-        else
-        {
-            i=4;
-        }
-    }
 
     messageDisplay();
     delay(5000);
