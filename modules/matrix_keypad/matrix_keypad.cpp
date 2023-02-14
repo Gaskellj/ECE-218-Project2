@@ -192,6 +192,10 @@ static void writeOnLCDCharToString(char keypadKey){
                 correctCode = true;
             }
         }
+        else
+        {
+            i=4;
+        }
     }
 
     messageDisplay();
