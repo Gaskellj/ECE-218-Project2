@@ -13,6 +13,7 @@
 #include "temperature_sensor.h"
 #include "gas_sensor.h"
 #include "matrix_keypad.h"
+#include "gate.h"
 #include "display.h"
 
 //=====[Declaration of private defines]========================================
@@ -39,6 +40,7 @@ static bool systemBlockedState = OFF;
 
 static bool codeComplete = false;
 static int numberOfCodeChars = 0;
+extern bool correctCode;
 
 //=====[Declarations (prototypes) of private functions]========================
 
@@ -56,6 +58,7 @@ void userInterfaceInit()
     incorrectCodeLed = OFF;
     systemBlockedLed = OFF;
     matrixKeypadInit( SYSTEM_TIME_INCREMENT_MS );
+    gateInit();
     userInterfaceDisplayInit();
 }
 
@@ -65,6 +68,7 @@ void userInterfaceUpdate()
     incorrectCodeIndicatorUpdate();
     systemBlockedIndicatorUpdate();
     userInterfaceDisplayUpdate();
+    gateCycle(correctCode);
 }
 
 bool incorrectCodeStateRead()
