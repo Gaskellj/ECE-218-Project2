@@ -147,8 +147,13 @@ static void userInterfaceDisplayInit()
 
 static void userInterfaceDisplayUpdate()
 {
-    static int accumulatedDisplayTime = 0;
-    char temperatureString[3] = "";
+    displayCharPositionWrite ( 0,0 );
+    displayStringWrite( "Enter Four Digit" );
+
+    displayCharPositionWrite ( 0,1 );
+    displayStringWrite( "*Code ON KEYPAD*" );
+    //static int accumulatedDisplayTime = 0;
+    //char temperatureString[3] = "";
     
     // if( accumulatedDisplayTime >=
     //     DISPLAY_REFRESH_TIME_MS ) {
