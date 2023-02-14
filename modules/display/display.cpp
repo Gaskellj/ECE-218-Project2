@@ -3,6 +3,8 @@
 #include "mbed.h"
 #include "arm_book_lib.h"
 #include "display.h"
+#include "matrix_keypad.h"
+
 
 //=====[Declaration of private defines]========================================
 
@@ -223,4 +225,20 @@ static void displayDataBusWrite( uint8_t dataBus )
     delay( 1 );
     displayPinWrite( DISPLAY_PIN_EN, OFF );  
     delay( 1 );                   
+}
+
+void displayCode(char enteredCode [], int startingCodeIndex){
+
+    char codeString[10];
+
+    displayCharPositionWrite ( 0,0 );
+    displayStringWrite("Code:           ");
+    // char codeString[10];
+
+    for (int i = 0; i < 4; i++){
+    char keyPadKey = enteredCode[i];
+    sprintf(codeString, "%c", keyPadKey);
+    displayCharPositionWrite ( i+startingCodeIndex,0);
+    displayStringWrite(codeString);
+    }
 }
