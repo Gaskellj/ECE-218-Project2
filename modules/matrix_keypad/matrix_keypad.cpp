@@ -34,10 +34,10 @@ DigitalIn keypadColPins[MATRIX_KEYPAD_NUMBER_OF_COLS]  = {PB_12, PB_13, PB_15, P
 //=====[Declaration and initialization of private global variables]============
 
 bool correctCode = false;// this should be public since we want this to be accessed by all the modules that will utilize the correct code
+char enteredCode[50];
 static matrixKeypadState_t matrixKeypadState;
 static int timeIncrement_ms = 0;
-static int xStartDisp = 5;
-static char enteredCode[50];
+int xStartDisp = 5;
 char codeSequence[4]   = { '1', '1', '0', '0' }; // correct code
 static int countCodeKeys = 0;
 
@@ -164,24 +164,14 @@ static char matrixKeypadScan()
 }
 
 static void writeOnLCDCharToString(char keypadKey){
-    char codeString[10];
-     
     // static int countCodeKeys = 0;
     
     // static char enteredCode[4];
 
     if ( countCodeKeys < 4 ){
     enteredCode[countCodeKeys] = keypadKey;
-    displayCharPositionWrite ( 0,0 );
-    displayStringWrite("Code:           ");
-    // char codeString[10];
-
-    for (int i = 0; i < 4; i++){
-    char keyPadKey = enteredCode[i];
-    sprintf(codeString, "%c", keyPadKey);
-    displayCharPositionWrite ( i+xStartDisp,0);
-    displayStringWrite(codeString);
-    }
+    displayCode(enteredCode, xStartDisp); // from display
+    
     // sprintf(codeString, "%c", keypadKey);
     // displayCharPositionWrite ( xStartDisp,0 );
     // displayStringWrite(codeString);
@@ -206,7 +196,7 @@ static void writeOnLCDCharToString(char keypadKey){
 
     messageDisplay();
     delay(5000);
-    if ()
+    
     // displayInput();
     
     }
@@ -261,7 +251,7 @@ static void messageDisplay(){
         }
 
 }
-static void emptyList(){
+void emptyList(){
     for (int i =0; i < 4; i++){
         enteredCode[i] = 0;
     }
@@ -278,10 +268,16 @@ static void emptyList(){
 // }
 
 
-bool isCorrectCode(){
-    return correctCode;
-}
+// bool isCorrectCode(){
+//     return correctCode;
+
+// }
+
 static void matrixKeypadReset()
 {
     matrixKeypadState = MATRIX_KEYPAD_SCANNING;
+}
+
+char* getCode(){
+    return codeSequence;
 }
