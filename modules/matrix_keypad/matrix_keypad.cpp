@@ -242,12 +242,15 @@ static void messageDisplay(){
             displayStringWrite("Congratulations ");
             displayCharPositionWrite ( 0,1 );
             displayStringWrite("..Gate is open..");
+            correctCode=false;
+            emptyList();
         }
-        else{
+    else{
             displayCharPositionWrite ( 0,0 );
             displayStringWrite(".# To try again.");
             displayCharPositionWrite ( 0,1 );
             displayStringWrite("Unlimited tries");
+            emptyList();
         }
 
 }
