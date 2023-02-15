@@ -40,6 +40,7 @@ char codeSequenceFromUserInterface[CODE_NUMBER_OF_KEYS];
 
 static bool incorrectCodeState = OFF;
 static bool systemBlockedState = OFF;
+static bool systemIncorrectGateCodeState = OFF;
 
 static bool codeComplete = false;
 static int numberOfCodeChars = 0;
@@ -86,6 +87,17 @@ void incorrectCodeStateWrite( bool state )
 bool systemBlockedStateRead()
 {
     return systemBlockedState;
+}
+
+bool systemIncorrectGateCodeStateRead()
+{
+    return systemIncorrectGateCodeState;
+}
+
+
+void systemIncorrectGateCodeStateWrite( bool state)
+{
+    systemIncorrectGateCodeState = state;
 }
 
 void systemBlockedStateWrite( bool state )
@@ -158,7 +170,7 @@ static void userInterfaceMatrixKeypadUpdate()
     static int numberOfHashKeyReleased = 0;
     char keyReleased = matrixKeypadUpdate();
     if( keyReleased != '\0' ) {
-        if( !incorrectCodeStateRead() ) {
+        if( !systemIncorrectGateCodeStateRead()) {
                 codeSequenceFromUserInterface[numberOfCodeChars] = keyReleased;
                 displayEnteredCode(codeSequenceFromUserInterface);
                 numberOfCodeChars++;
@@ -178,6 +190,8 @@ static void userInterfaceMatrixKeypadUpdate()
 
 static void userInterfaceDisplayLockedOut()
 {
+    systemIncorrectGateCodeState = (ON);
+
     displayInit();
      
     displayCharPositionWrite ( 0,0 );

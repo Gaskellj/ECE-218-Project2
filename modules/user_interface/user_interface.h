@@ -20,6 +20,8 @@ void incorrectCodeStateWrite( bool state );
 bool systemBlockedStateRead();
 void systemBlockedStateWrite( bool state );
 
+void systemIncorrectGateCodeStateWrite(bool state);
+
 void userInterfaceDisplayUpdate(char enteredCode [], int startingCodeIndex);
 void userInterfaceCorrectOrIncorrect(bool codeCorrect);
 

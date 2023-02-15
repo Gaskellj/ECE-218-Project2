@@ -60,7 +60,7 @@ bool codeMatchFrom( codeOrigin_t codeOrigin, int type )
                 } else {
                     numberOfIncorrectGateCodes++;
                     if (numberOfIncorrectGateCodes > 2){
-                        incorrectCodeStateWrite(ON);
+                        systemIncorrectGateCodeStateWrite(ON);
                     }
                     incorrectCodeDisplayUpdate(3-numberOfIncorrectGateCodes);
                 }
