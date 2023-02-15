@@ -20,6 +20,15 @@ void incorrectCodeStateWrite( bool state );
 bool systemBlockedStateRead();
 void systemBlockedStateWrite( bool state );
 
+void userInterfaceDisplayUpdate(char enteredCode [], int startingCodeIndex);
+void userInterfaceCorrectOrIncorrect(bool codeCorrect);
+
+void correctCodeDisplayUpdate();
+
+void incorrectCodeDisplayUpdate(int attempts);
+
+void resetDisplay();
+
 //=====[#include guards - end]=================================================
 
 #endif // _USER_INTERFACE_H_

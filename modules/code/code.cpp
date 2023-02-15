@@ -25,13 +25,15 @@ extern char codeSequenceFromPcSerialCom[CODE_NUMBER_OF_KEYS];
 
 //=====[Declaration and initialization of private global variables]============
 
-static int numberOfIncorrectCodes = 0;
-static char codeSequence[CODE_NUMBER_OF_KEYS] = { '1', '8', '0', '5' };
+static int numberOfIncorrectAlarmCodes = 0;
+static int numberOfIncorrectGateCodes = 0;
+static char alarmCodeSequence[CODE_NUMBER_OF_KEYS] = { '1', '8', '0', '5' };
+static char gateCodeSequence[CODE_NUMBER_OF_KEYS] = {'1', '1', '0', '0'};
 
 //=====[Declarations (prototypes) of private functions]========================
 
-static bool codeMatch( char* codeToCompare );
-static void codeDeactivate();
+static bool codeMatch( char* codeToCompare, int type );
+static void alarmCodeDeactivate();
 
 //=====[Implementations of public functions]===================================
 
@@ -39,23 +41,28 @@ void codeWrite( char* newCodeSequence )
 {
     int i;
     for (i = 0; i < CODE_NUMBER_OF_KEYS; i++) {
-        codeSequence[i] = newCodeSequence[i];
+        alarmCodeSequence[i] = newCodeSequence[i];
     }
 }
 
-bool codeMatchFrom( codeOrigin_t codeOrigin )
+//int type refers to 1: Alarm or 2: Gate
+bool codeMatchFrom( codeOrigin_t codeOrigin, int type )
 {
     bool codeIsCorrect = false;
     switch (codeOrigin) {
         case CODE_KEYPAD:
             if( userInterfaceCodeCompleteRead() ) {
-                codeIsCorrect = codeMatch(codeSequenceFromUserInterface);
+                codeIsCorrect = codeMatch(codeSequenceFromUserInterface, type);
                 userInterfaceCodeCompleteWrite(false);
                 if ( codeIsCorrect ) {
-                    codeDeactivate();
+                    numberOfIncorrectGateCodes = 0;
+                    correctCodeDisplayUpdate();
                 } else {
-                    incorrectCodeStateWrite(ON);
-                    numberOfIncorrectCodes++;
+                    numberOfIncorrectGateCodes++;
+                    if (numberOfIncorrectGateCodes > 2){
+                        incorrectCodeStateWrite(ON);
+                    }
+                    incorrectCodeDisplayUpdate(3-numberOfIncorrectGateCodes);
                 }
             }
 
@@ -63,14 +70,14 @@ bool codeMatchFrom( codeOrigin_t codeOrigin )
         break;
         case CODE_PC_SERIAL:
             if( pcSerialComCodeCompleteRead() ) {
-                codeIsCorrect = codeMatch(codeSequenceFromPcSerialCom);
+                codeIsCorrect = codeMatch(codeSequenceFromPcSerialCom, type);
                 pcSerialComCodeCompleteWrite(false);
                 if ( codeIsCorrect ) {
-                    codeDeactivate();
+                    alarmCodeDeactivate();
                     pcSerialComStringWrite( "\r\nThe code is correct\r\n\r\n" );
                 } else {
                     incorrectCodeStateWrite(ON);
-                    numberOfIncorrectCodes++;
+                    numberOfIncorrectAlarmCodes++;
                     pcSerialComStringWrite( "\r\nThe code is incorrect\r\n\r\n" );
                 }
             }
@@ -80,7 +87,7 @@ bool codeMatchFrom( codeOrigin_t codeOrigin )
         break;
     }
 
-    if ( numberOfIncorrectCodes >= 5 ) {
+    if ( numberOfIncorrectAlarmCodes >= 5 ) {
         systemBlockedStateWrite(ON);
     }
 
@@ -89,20 +96,29 @@ bool codeMatchFrom( codeOrigin_t codeOrigin )
 
 //=====[Implementations of private functions]==================================
 
-static bool codeMatch( char* codeToCompare )
+static bool codeMatch( char* codeToCompare, int type )
 {
+    bool isEqual = true;
     int i;
-    for (i = 0; i < CODE_NUMBER_OF_KEYS; i++) {
-        if ( codeSequence[i] != codeToCompare[i] ) {
-            return false;
+    if (type == 1){
+        for (i = 0; i < CODE_NUMBER_OF_KEYS; i++) {
+            if ( alarmCodeSequence[i] != codeToCompare[i] ) {
+                isEqual =  false;
+            }
+        }
+    } else {
+        for (i = 0; i < CODE_NUMBER_OF_KEYS; i++) {
+            if ( gateCodeSequence[i] != codeToCompare[i] ) {
+                isEqual = false;
+            }
         }
     }
-    return true;
+    return isEqual;
 }
 
-static void codeDeactivate()
+static void alarmCodeDeactivate()
 {
     systemBlockedStateWrite(OFF);
     incorrectCodeStateWrite(OFF);
-    numberOfIncorrectCodes = 0;
+    numberOfIncorrectAlarmCodes = 0;
 }

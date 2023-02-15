@@ -1,5 +1,8 @@
 //=====[Libraries]=============================================================
 
+#include <cstring>
+#include <iostream>
+
 #include "mbed.h"
 #include "arm_book_lib.h"
 
@@ -13,8 +16,8 @@
 #include "temperature_sensor.h"
 #include "gas_sensor.h"
 #include "matrix_keypad.h"
-#include "gate.h"
 #include "display.h"
+#include "servo_gate.h"
 
 //=====[Declaration of private defines]========================================
 
@@ -40,7 +43,6 @@ static bool systemBlockedState = OFF;
 
 static bool codeComplete = false;
 static int numberOfCodeChars = 0;
-extern bool correctCode;
 
 //=====[Declarations (prototypes) of private functions]========================
 
@@ -49,7 +51,10 @@ static void incorrectCodeIndicatorUpdate();
 static void systemBlockedIndicatorUpdate();
 
 static void userInterfaceDisplayInit();
-static void userInterfaceDisplayUpdate();
+
+static void initCode();
+
+static void userInterfaceDisplayLockedOut();
 
 //=====[Implementations of public functions]===================================
 
@@ -58,7 +63,6 @@ void userInterfaceInit()
     incorrectCodeLed = OFF;
     systemBlockedLed = OFF;
     matrixKeypadInit( SYSTEM_TIME_INCREMENT_MS );
-    gateInit();
     userInterfaceDisplayInit();
 }
 
@@ -67,8 +71,6 @@ void userInterfaceUpdate()
     userInterfaceMatrixKeypadUpdate();
     incorrectCodeIndicatorUpdate();
     systemBlockedIndicatorUpdate();
-    userInterfaceDisplayUpdate();
-    gateCycle(correctCode);
 }
 
 bool incorrectCodeStateRead()
@@ -101,36 +103,88 @@ void userInterfaceCodeCompleteWrite( bool state )
     codeComplete = state;
 }
 
+void resetDisplay()
+{
+    userInterfaceDisplayInit();
+}
+
+void correctCodeDisplayUpdate()
+{
+    displayInit();
+
+    displayCharPositionWrite ( 0,0 );
+    displayStringWrite("Congratulations ");
+
+    displayCharPositionWrite ( 0,1 );
+    displayStringWrite("Gate Is Open");
+
+    raiseGate();
+
+    userInterfaceDisplayInit();
+}
+
+void incorrectCodeDisplayUpdate(int attempts)
+{
+    displayInit();
+
+    displayCharPositionWrite ( 0,0 );
+    displayStringWrite( "Incorrect Code" );
+
+    displayCharPositionWrite ( 0,1 );
+    char message[10];
+    if (attempts ==1){
+        sprintf(message, "%i More Try",  attempts );
+    } else {
+        sprintf(message, "%i More Tries",  attempts );
+    }
+    displayStringWrite(message);
+
+    delay(2000);
+
+    userInterfaceDisplayInit();
+}
+
+void displayEnteredCode(char enteredCode [])
+{
+    displayCharPositionWrite ( 12,1 );
+
+    displayStringWrite(enteredCode);
+}
+
 //=====[Implementations of private functions]==================================
 
 static void userInterfaceMatrixKeypadUpdate()
 {
     static int numberOfHashKeyReleased = 0;
     char keyReleased = matrixKeypadUpdate();
-
     if( keyReleased != '\0' ) {
-
-        if( sirenStateRead() && !systemBlockedStateRead() ) {
-            if( !incorrectCodeStateRead() ) {
+        if( !incorrectCodeStateRead() ) {
                 codeSequenceFromUserInterface[numberOfCodeChars] = keyReleased;
+                displayEnteredCode(codeSequenceFromUserInterface);
                 numberOfCodeChars++;
                 if ( numberOfCodeChars >= CODE_NUMBER_OF_KEYS ) {
                     codeComplete = true;
                     numberOfCodeChars = 0;
+                    bool correctCode = codeMatchFrom(CODE_KEYPAD,2);
+                    initCode();
                 }
             } else {
-                if( keyReleased == '#' ) {
-                    numberOfHashKeyReleased++;
-                    if( numberOfHashKeyReleased >= 2 ) {
-                        numberOfHashKeyReleased = 0;
-                        numberOfCodeChars = 0;
-                        codeComplete = false;
-                        incorrectCodeState = OFF;
-                    }
-                }
+                userInterfaceDisplayLockedOut();
             }
+        } else {
+            
         }
-    }
+}
+
+static void userInterfaceDisplayLockedOut()
+{
+    displayInit();
+     
+    displayCharPositionWrite ( 0,0 );
+    displayStringWrite( "Locked Out" );
+
+    displayCharPositionWrite ( 0,1 );
+    displayStringWrite( "Press Reset " );
 }
 
 static void userInterfaceDisplayInit()
@@ -138,55 +192,13 @@ static void userInterfaceDisplayInit()
     displayInit();
      
     displayCharPositionWrite ( 0,0 );
-    displayStringWrite( "Enter Four Digit" );
+    displayStringWrite( "Gate Is Closed" );
 
     displayCharPositionWrite ( 0,1 );
-    displayStringWrite( "*Code ON KEYPAD*" );
-    
+    displayStringWrite( "Enter Code:" );
+
 }
 
-static void userInterfaceDisplayUpdate()
-{
-    displayCharPositionWrite ( 0,0 );
-    displayStringWrite( "Enter Four Digit" );
-
-    displayCharPositionWrite ( 0,1 );
-    displayStringWrite( "*Code ON KEYPAD*" );
-    //static int accumulatedDisplayTime = 0;
-    //char temperatureString[3] = "";
-    
-    // if( accumulatedDisplayTime >=
-    //     DISPLAY_REFRESH_TIME_MS ) {
-
-    //     accumulatedDisplayTime = 0;
-
-    //     sprintf(temperatureString, "%.0f", temperatureSensorReadCelsius());
-    //     displayCharPositionWrite ( 12,0 );
-    //     displayStringWrite( temperatureString );
-    //     displayCharPositionWrite ( 14,0 );
-    //     displayStringWrite( "'C" );
-
-    //     displayCharPositionWrite ( 4,1 );
-
-    //     if ( gasDetectorStateRead() ) {
-    //         displayStringWrite( "Detected    " );
-    //     } else {
-    //         displayStringWrite( "Not Detected" );
-    //     }
-
-    //     displayCharPositionWrite ( 6,2 );
-        
-    //     if ( sirenStateRead() ) {
-    //         displayStringWrite( "ON " );
-    //     } else {
-    //         displayStringWrite( "OFF" );
-    //     }
-
-    // } else {
-    //     accumulatedDisplayTime =
-    //         accumulatedDisplayTime + SYSTEM_TIME_INCREMENT_MS;        
-    // } 
-}
 
 static void incorrectCodeIndicatorUpdate()
 {
@@ -196,4 +208,8 @@ static void incorrectCodeIndicatorUpdate()
 static void systemBlockedIndicatorUpdate()
 {
     systemBlockedLed = systemBlockedState;
+}
+
+static void initCode(){
+    memset(codeSequenceFromUserInterface, 0, sizeof(codeSequenceFromUserInterface));
 }

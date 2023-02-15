@@ -12,7 +12,6 @@
 #include "temperature_sensor.h"
 #include "gas_sensor.h"
 #include "event_log.h"
-#include "matrix_keypad.h"
 
 //=====[Declaration of private defines]========================================
 
@@ -60,7 +59,6 @@ static void commandShowCurrentTemperatureInFahrenheit();
 static void commandSetDateAndTime();
 static void commandShowDateAndTime();
 static void commandShowStoredEvents();
-static void commandShowGateCode();
 
 //=====[Implementations of public functions]===================================
 
@@ -168,7 +166,6 @@ static void pcSerialComCommandUpdate( char receivedChar )
         case 's': case 'S': commandSetDateAndTime(); break;
         case 't': case 'T': commandShowDateAndTime(); break;
         case 'e': case 'E': commandShowStoredEvents(); break;
-        case 'g': case 'G': commandShowGateCode(); break;
         default: availableCommands(); break;
     } 
 }
@@ -186,7 +183,6 @@ static void availableCommands()
     pcSerialComStringWrite( "Press 's' or 'S' to set the date and time\r\n" );
     pcSerialComStringWrite( "Press 't' or 'T' to get the date and time\r\n" );
     pcSerialComStringWrite( "Press 'e' or 'E' to get the stored events\r\n" );
-    pcSerialComStringWrite( "Press 'g' or 'G' to get the current gate code");
     pcSerialComStringWrite( "\r\n" );
 }
 
@@ -311,12 +307,4 @@ static void commandShowStoredEvents()
         pcSerialComStringWrite( str );   
         pcSerialComStringWrite( "\r\n" );                    
     }
-}
-
-static void commandShowGateCode()
-{
-    char str[100] = "";
-    sprintf( str, "Current code is: %s", getCode() ); //Uses getCode from matrix_keypad WILL CHANGE USIMG CODE MODULE
-    pcSerialComStringWrite( str );
-    pcSerialComStringWrite("\r\n");
 }

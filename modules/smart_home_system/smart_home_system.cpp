@@ -9,6 +9,7 @@
 #include "fire_alarm.h"
 #include "pc_serial_com.h"
 #include "event_log.h"
+#include "servo_gate.h"
 
 //=====[Declaration of private defines]========================================
 
@@ -35,6 +36,7 @@ void smartHomeSystemInit()
 
 void smartHomeSystemUpdate()
 {
+    servo_gateInit();
     userInterfaceUpdate();
     fireAlarmUpdate();    
     pcSerialComUpdate();
