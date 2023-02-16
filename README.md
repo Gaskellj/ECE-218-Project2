@@ -4,7 +4,7 @@
 ## Outline
 
 Our project adds new functionality to the existing smart-home system by adding a gate that can be opened by the user. The code is initialised at '1100' for ease of testing. The user may use the attached keypad to deactivate the code - the instruction to do this is displayed on the LCD screen.
-The user can use the serical monitor in the same way as before with two additional features changeGateCode and showGateCode that can be activated by pressing '5' and '6' respeciverly on the serial monitor.
+The user can use the serial monitor in the same way as before with two additional features showGateCode and changeGateCode that can be activated by pressing '6' and '7' respectively on the serial monitor.
 
 ## Conditions
 
@@ -20,13 +20,13 @@ If the user gets the code incorrect the servo gate won't open and an error messa
 
 If the user gets the code wrong three times in a row they are locked out of the system and must press reset in order to gain access to the gate functionality again - a message is displayed on the LCD to explain this.
 
-#### User presses 5 on serial monitor
-
-ChangeGateCode is activated. The user must input a 4 digit code to the serial monitor. The code is hidden using * and when the code is completed it is set to the defined value.
-
 #### User presses 6 on serial monitor
 
 ShowGateCode is activated. This outputs the current gate code to screen in the format "Current Gate Code = ".
+
+#### User presses 7 on serial monitor
+
+ChangeGateCode is activated. The user must input a 4 digit code to the serial monitor. The code is hidden using * and when the code is completed it is set to the defined value.
 
 ## Functionality
 
