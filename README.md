@@ -9,7 +9,7 @@ The user can use the serical monitor in the same way as before with two addition
 
 #### Correct Code
 
-If the user gets the code correct the servo will open the gate and the number of incorrect attempts is reset.
+If the user gets the code correct the servo will open the gate and the number of incorrect attempts is reset. <span style="color:blue">some *blue* text</span>.
 
 #### Incorrect Code
 
