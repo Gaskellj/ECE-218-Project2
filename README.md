@@ -1,6 +1,15 @@
 # ECE-218-Project2 - Prof.Traver
 
 ## Project By: James Gaskell, Asher Zive, Farooq Memon
+
+## Edited Modules
+
+1. New module servo_gate (driver)
+2. Edited code module
+3. Edited user_interface module
+4. Edited smart_home module
+5. Edited pc_serial_comm module
+
 ## Outline
 
 Our project adds new functionality to the existing smart-home system by adding a gate that can be opened by the user. The code is initialised at '1100' for ease of testing. The user may use the attached keypad to deactivate the code - the instruction to do this is displayed on the LCD screen.
@@ -18,7 +27,7 @@ If the user gets the code incorrect the servo gate won't open and an error messa
 
 #### Incorrect Code Three Times
 
-If the user gets the code wrong three times in a row they are locked out of the system and must press reset in order to gain access to the gate functionality again - a message is displayed on the LCD to explain this.
+If the user gets the code wrong three times in a row they are locked out of the system. If the user then attempts to anter a character on the keypad a message is displayed on the LCD indicating must press reset in order to gain access to the gate functionality again.
 
 #### User presses 5 on serial monitor
 
