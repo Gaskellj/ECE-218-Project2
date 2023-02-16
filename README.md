@@ -10,11 +10,11 @@ The user can use the serical monitor in the same way as before with two addition
 
 #### Correct Code
 
-If the user gets the code correct the servo will open the gate and the number of incorrect attempts is reset.
+If the user gets the code correct the servo will open the gate and the number of incorrect attempts is reset and the entered code storage is reset to empty.
 
 #### Incorrect Code
 
-If the user gets the code incorrect the servo gate will not open and an error message will display on screen for two seconds alongside the number of remaining attempts. The user must wait for the error messege to disappear and will be reinstructed to enter a code.
+If the user gets the code incorrect the servo gate won't open and an error message will display on screen for two seconds alongside the number of remaining attempts. The entered code storage is reset to empty. The user must wait for the error messege to disappear and will be reinstructed to enter a code.
 
 #### Incorrect Code Three Times
 
