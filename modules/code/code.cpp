@@ -94,6 +94,11 @@ bool codeMatchFrom( codeOrigin_t codeOrigin, int type )
     return codeIsCorrect;
 }
 
+char* getGateCode()
+{
+    return gateCodeSequence;
+}
+
 //=====[Implementations of private functions]==================================
 
 static bool codeMatch( char* codeToCompare, int type )
