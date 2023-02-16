@@ -6,5 +6,7 @@ Our project
 
 ## Functionality
 
-|FUNCTION|REQUIRED|IMPLEMENTED|
-|--------|--------|-----------|
+|Function|Required?|Implemented?|
+|--------|---------|------------|
+|Gate Passcode | Yes | Yes |
+
