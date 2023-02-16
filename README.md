@@ -1,6 +1,6 @@
-# ECE-218-Project2 - James Gaskell, Asher Zive, Farooq Memon
+# ECE-218-Project2 - Prof.Traver
 
-
+## Project By: James Gaskell, Asher Zive, Farooq Memon
 ## Outline
 
 Our project adds new functionality to the existing smart-home system by adding a gate that can be opened by the user. The code is initialised at '1100' for ease of testing. The user may use the attached keypad to deactivate the code - the instruction to do this is displayed on the LCD screen.
