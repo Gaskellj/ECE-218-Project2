@@ -2,7 +2,7 @@
 
 ## Outline
 
-Our project adds new functionality to the existing smart-home system by adding a gate that can be opened by the user. The code is initialised at ```diff -'1100' for ease of testing. The user may use the attached keypad to deactivate the code - the instruction to do this is displayed on the LCD screen.
+Our project adds new functionality to the existing smart-home system by adding a gate that can be opened by the user. The code is initialised at '1100' for ease of testing. The user may use the attached keypad to deactivate the code - the instruction to do this is displayed on the LCD screen.
 The user can use the serical monitor in the same way as before with two additional features changeGateCode and showGateCode that can be activated by pressing '5' and '6' respeciverly on the serial monitor.
 
 ## Conditions
