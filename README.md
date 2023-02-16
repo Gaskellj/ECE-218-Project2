@@ -27,7 +27,7 @@ If the user gets the code incorrect the servo gate won't open and an error messa
 
 #### Incorrect Code Three Times
 
-If the user gets the code wrong three times in a row they are locked out of the system. If the user then attempts to anter a character on the keypad a message is displayed on the LCD indicating must press reset in order to gain access to the gate functionality again.
+If the user gets the code wrong three times in a row they are locked out of the system. If the user then attempts to anter a character on the keypad, a message is displayed on the LCD indicating must press reset in order to gain access to the gate functionality again.
 
 #### User presses 6 on serial monitor
 
