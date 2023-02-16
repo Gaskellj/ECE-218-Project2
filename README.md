@@ -1,4 +1,4 @@
-# ECE-218-Project2 - Prof.Traver
+# ECE-218-Project2 - Prof. Traver
 
 ## Project By: James Gaskell, Asher Zive, Farooq Memon
 
