@@ -1,4 +1,5 @@
-# ECE-218-Project2
+# ECE-218-Project2 - James Gaskell, Asher Zive, Farooq Memon
+
 
 ## Outline
 
