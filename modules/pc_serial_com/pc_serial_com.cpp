@@ -36,6 +36,8 @@ UnbufferedSerial uartUsb(USBTX, USBRX, 115200);
 
 char codeSequenceFromPcSerialCom[CODE_NUMBER_OF_KEYS];
 
+int codeType = 0;
+
 //=====[Declaration and initialization of private global variables]============
 
 static pcSerialComMode_t pcSerialComMode = PC_SERIAL_COMMANDS;
@@ -152,7 +154,7 @@ static void pcSerialComSaveNewCodeUpdate( char receivedChar )
     if ( numberOfCodeChars >= CODE_NUMBER_OF_KEYS ) {
         pcSerialComMode = PC_SERIAL_COMMANDS;
         numberOfCodeChars = 0;
-        codeWrite( newCodeSequence );
+        codeWrite( newCodeSequence, codeType);
         pcSerialComStringWrite( "\r\nNew code configured\r\n\r\n" );
     } 
 }
@@ -164,13 +166,14 @@ static void pcSerialComCommandUpdate( char receivedChar )
         case '2': commandShowCurrentGasDetectorState(); break;
         case '3': commandShowCurrentOverTemperatureDetectorState(); break;
         case '4': commandEnterCodeSequence(); break;
-        case '5': commandEnterNewCode(); break;
+        case '5': commandEnterNewCode(); codeType = 1; break;
+        case '6': commandShowGateCode(); break;
+        case '7': commandEnterNewCode(); codeType = 2; break;
         case 'c': case 'C': commandShowCurrentTemperatureInCelsius(); break;
         case 'f': case 'F': commandShowCurrentTemperatureInFahrenheit(); break;
         case 's': case 'S': commandSetDateAndTime(); break;
         case 't': case 'T': commandShowDateAndTime(); break;
         case 'e': case 'E': commandShowStoredEvents(); break;
-        case 'g': case 'G': commandShowGateCode(); break;
         default: availableCommands(); break;
     } 
 }
@@ -183,12 +186,13 @@ static void availableCommands()
     pcSerialComStringWrite( "Press '3' to get the over temperature detector state\r\n" );
     pcSerialComStringWrite( "Press '4' to enter the code to deactivate the alarm\r\n" );
     pcSerialComStringWrite( "Press '5' to enter a new code to deactivate the alarm\r\n" );
+    pcSerialComStringWrite( "Press '6' to view the current gate code\r\n");
+    pcSerialComStringWrite( "Press '7' to change the gate code\r\n");
     pcSerialComStringWrite( "Press 'f' or 'F' to get lm35 reading in Fahrenheit\r\n" );
     pcSerialComStringWrite( "Press 'c' or 'C' to get lm35 reading in Celsius\r\n" );
     pcSerialComStringWrite( "Press 's' or 'S' to set the date and time\r\n" );
     pcSerialComStringWrite( "Press 't' or 'T' to get the date and time\r\n" );
     pcSerialComStringWrite( "Press 'e' or 'E' to get the stored events\r\n" );
-    pcSerialComStringWrite( "Press 'g' or 'G' to view the current gate code\r\n" );
     pcSerialComStringWrite( "\r\n" );
 }
 

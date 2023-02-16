@@ -37,11 +37,17 @@ static void alarmCodeDeactivate();
 
 //=====[Implementations of public functions]===================================
 
-void codeWrite( char* newCodeSequence )
+void codeWrite( char* newCodeSequence, int type )
 {
     int i;
-    for (i = 0; i < CODE_NUMBER_OF_KEYS; i++) {
-        alarmCodeSequence[i] = newCodeSequence[i];
+    if (type == 1){
+        for (i = 0; i < CODE_NUMBER_OF_KEYS; i++) {
+            alarmCodeSequence[i] = newCodeSequence[i];
+        }
+    } else {
+        for (i = 0; i < CODE_NUMBER_OF_KEYS; i++) {
+            gateCodeSequence[i] = newCodeSequence[i];
+        }
     }
 }
 

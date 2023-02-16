@@ -16,7 +16,7 @@ typedef enum{
 
 //=====[Declarations (prototypes) of public functions]=========================
 
-void codeWrite( char* newCodeSequence );
+void codeWrite( char* newCodeSequence, int type );
 bool codeMatchFrom( codeOrigin_t codeOrigin, int type );
 
 char* getGateCode();
