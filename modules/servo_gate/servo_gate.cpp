@@ -15,13 +15,16 @@ DigitalOut testLED(LED2);
 
 static void lowerGate();
 
-
+//Initialises the servo
+//Puts the servo into its closed position
 void servo_gateInit()
 {
     servo.period(PERIOD);
     servo.write(DUTY_MIN);
 }
 
+//Puts the servo into its open position
+//Delays for 4 seconds until the sequence of the program will re-initialise the servo
 void raiseGate()
 {
     servo.write(DUTY_MAX);

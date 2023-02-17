@@ -52,6 +52,10 @@ void codeWrite( char* newCodeSequence, int type )
 }
 
 //int type refers to 1: Alarm or 2: Gate
+//calls codeMatch with the int type
+//Drives the display if the code is correct or incorrect
+//Keeps track of the number of incorrect codes, intialises it to 0 after a correct code is added
+//Defines a blockstate systemIncorrectGateCodeState if more than 3 incorrect codes
 bool codeMatchFrom( codeOrigin_t codeOrigin, int type )
 {
     bool codeIsCorrect = false;
@@ -107,6 +111,7 @@ char* getGateCode()
 
 //=====[Implementations of private functions]==================================
 
+//Now takes integers 1 or 2 to define wether it should check against the gate code or alarm code
 static bool codeMatch( char* codeToCompare, int type )
 {
     bool isEqual = true;

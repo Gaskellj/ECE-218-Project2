@@ -36,6 +36,7 @@ UnbufferedSerial uartUsb(USBTX, USBRX, 115200);
 
 char codeSequenceFromPcSerialCom[CODE_NUMBER_OF_KEYS];
 
+//Used to determine wether a new entered code is for the gate or alarm
 int codeType = 0;
 
 //=====[Declaration and initialization of private global variables]============
@@ -144,6 +145,8 @@ static void pcSerialComGetCodeUpdate( char receivedChar )
     } 
 }
 
+//CodeType now passed into codeWrite to determine where the new code should be written
+//The code can be written to gate code or alarm code
 static void pcSerialComSaveNewCodeUpdate( char receivedChar )
 {
     static char newCodeSequence[CODE_NUMBER_OF_KEYS];
@@ -159,6 +162,10 @@ static void pcSerialComSaveNewCodeUpdate( char receivedChar )
     } 
 }
 
+//Handles the characters inputted to the serial monitor
+//Inputs of '6' or '7' drive the new system funcitonality
+//CodeType is updated for both commands '5' and '7'
+//This is to determine if the alarm code is being changed or the gate code
 static void pcSerialComCommandUpdate( char receivedChar )
 {
     switch (receivedChar) {
@@ -178,6 +185,7 @@ static void pcSerialComCommandUpdate( char receivedChar )
     } 
 }
 
+//New available commands showGateCode, changeGateCode
 static void availableCommands()
 {
     pcSerialComStringWrite( "Available commands:\r\n" );
@@ -236,6 +244,7 @@ static void commandEnterCodeSequence()
     }
 }
 
+//Now used to change both the alarm code and the gate code
 static void commandEnterNewCode()
 {
     pcSerialComStringWrite( "Please enter the new four digits numeric code " );
@@ -319,6 +328,8 @@ static void commandShowStoredEvents()
     }
 }
 
+//Retreives the current gate code
+//Displays it to terminal
 static void commandShowGateCode()
 {
     char str[100] = "";

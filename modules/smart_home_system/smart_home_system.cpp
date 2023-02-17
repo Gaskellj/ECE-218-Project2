@@ -34,6 +34,9 @@ void smartHomeSystemInit()
     pcSerialComInit();
 }
 
+//Call to servo_gateInit() method automatically resets the servo to the closed position after it opens
+//Closes the servo gate after a delay in servo_gate module of 4 seconds
+//Is useful to have in the update loop in case someone manually tries to open the gate / turn the servo
 void smartHomeSystemUpdate()
 {
     servo_gateInit();
