@@ -25,8 +25,8 @@ void servo_gateInit()
 
 //Puts the servo into its open position
 //Delays for 4 seconds until the sequence of the program will re-initialise the servo
-void openDoor()
+void raiseGate()
 {
     servo.write(DUTY_MAX);
-    delay(10000);
+    delay(4000);
 }
