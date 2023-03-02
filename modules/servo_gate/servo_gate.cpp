@@ -28,5 +28,5 @@ void servo_gateInit()
 void openDoor()
 {
     servo.write(DUTY_MAX);
-    delay(4000);
+    delay(10000);
 }
